@@ -35,3 +35,5 @@ ccflags-y := -Wall
 # CFLAGS_sbdd.o := -DDEBUG
 
 obj-m := sbdd.o
+
+sbdd-objs := sbdd_core.o sbdd_vm.o
