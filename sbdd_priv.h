@@ -16,4 +16,8 @@ blk_qc_t sbdd_vm_make_request(struct request_queue *q, struct bio *bio);
 int sbdd_vm_init(const sector_t capacity);
 void sbdd_vm_exit(void);
 
+blk_qc_t sbdd_proxy_make_request(struct request_queue *q, struct bio *bio);
+int sbdd_proxy_init(const sector_t capacity);
+void sbdd_proxy_exit(void);
+
 #endif /* SBDD_PRIVATE_H */
