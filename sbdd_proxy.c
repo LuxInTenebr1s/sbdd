@@ -44,38 +44,21 @@ blk_qc_t sbdd_proxy_make_request(struct request_queue *q, struct bio *bio)
 int sbdd_proxy_init(const sector_t capacity)
 {
     struct block_device *bdev;
-    char *trimmed_path, *path_copy;
 
-    int ret = 0;
-
-    path_copy = kmalloc(strlen(__sbdd_proxy_path) + 1, GFP_KERNEL);
-    if (!path_copy)
-        return -ENOMEM;
-
-    strcpy(path_copy, __sbdd_proxy_path);
-    trimmed_path = strim(path_copy);
-
-    bdev = blkdev_get_by_path(trimmed_path, SBDD_PROXY_MODE, NULL);
-    if (IS_ERR(bdev)) {
-        pr_err("failed to acquire block device (%s): %ld\n", trimmed_path,
-                                                           PTR_ERR(bdev));
-        ret = PTR_ERR(bdev);
-        goto out;
-    }
+    bdev = sbdd_get_bdev_by_path(__sbdd_proxy_path, SBDD_PROXY_MODE, NULL);
+    if (IS_ERR(bdev))
+        return PTR_ERR(bdev);
 
     if (get_capacity(bdev->bd_disk) < capacity) {
         pr_err("proxy disk is too small!\n");
         blkdev_put(bdev, SBDD_PROXY_MODE);
 
-        ret = -EINVAL;
-        goto out;
+        return -EINVAL;
     }
 
     __sbdd_proxy_dev = bdev;
+    return 0;
 
-out:
-    kfree(path_copy);
-    return ret;
 }
 
 void sbdd_proxy_exit(void)

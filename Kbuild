@@ -38,4 +38,5 @@ obj-m := sbdd.o
 
 sbdd-objs := sbdd_core.o \
 			 sbdd_vm.o   \
-			 sbdd_proxy.o
+			 sbdd_proxy.o \
+			 sbdd_util.o

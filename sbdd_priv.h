@@ -20,4 +20,6 @@ blk_qc_t sbdd_proxy_make_request(struct request_queue *q, struct bio *bio);
 int sbdd_proxy_init(const sector_t capacity);
 void sbdd_proxy_exit(void);
 
+struct block_device* sbdd_get_bdev_by_path(const char *path, fmode_t mode, void *claim);
+
 #endif /* SBDD_PRIVATE_H */
