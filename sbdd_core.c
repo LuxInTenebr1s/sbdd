@@ -23,6 +23,7 @@ enum sbdd_mode {
 	SBDD_MODE_NONE   = -1,
 	SBDD_MODE_VM     = 0,
 	SBDD_MODE_PROXY  = 1,
+	SBDD_MODE_RAID1	 = 2,
 	SBDD_MODE_MAX,
 };
 
@@ -84,6 +85,11 @@ static void sbdd_set_ops(enum sbdd_mode mode, struct sbdd_drv_ops *ops)
 		ops->dr_make_request = sbdd_proxy_make_request;
 		ops->dr_init = sbdd_proxy_init;
 		ops->dr_exit = sbdd_proxy_exit;
+		break;
+	case SBDD_MODE_RAID1:
+		ops->dr_make_request = sbdd_raid1_make_request;
+		ops->dr_init = sbdd_raid1_init;
+		ops->dr_exit = sbdd_raid1_exit;
 		break;
 	case SBDD_MODE_VM:
 	default:
